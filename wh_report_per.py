@@ -17,6 +17,10 @@ CLIENT_LIST = st.secrets["CLIENTS"]
 API_URL = st.secrets["API_URL"]
 FILE_BUFFER = io.BytesIO()
 
+LIMA_ZONES_LINK=r"https://raw.githubusercontent.com/rorumyantsev/Check_district/main/lima_callao_distritos.geojson"
+LIMA_ZONES_GEOMETRY=json.loads(open('lima_callao_distritos.geojson').read())
+def define_zone(row):
+    
 
 def get_claims(secret, date_from, date_to, cursor=0):
     url = API_URL
@@ -26,6 +30,7 @@ def get_claims(secret, date_from, date_to, cursor=0):
         "created_to": f"{date_to}T23:59:59{timezone_offset}",
         "limit": 1000,
         "cursor": cursor
+        "status": "performer_lookup"
     }) if cursor == 0 else json.dumps({"cursor": cursor})
 
     headers = {
