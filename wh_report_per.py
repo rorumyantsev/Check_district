@@ -29,10 +29,16 @@ for feature in LIMA_ZONES_GEOMETRY['features']:
     lima_zones_polygon.append(shapely.geometry.Polygon(feature['geometry']['coordinates'][0][0]))
     lima_zones_names.append(feature['properties']['distrito'])
     i = i + 1
-N_Districts = i - 1 
+N_Districts = i 
 #st.write(i)
 
-#def define_zone(row):
+def define_zone(row):
+    row("zone") = "No District/ERROR"
+    for i in range(N_Districts):
+        if lima_zones_polygon[i].contains(Point([row["lon"], row["lat"]])):
+            row("zone") = lima_zones_names[i]
+return row
+            
     
 
 def get_claims(secret, date_from, date_to, cursor=0):
@@ -205,6 +211,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
 #        result_frame.insert(3, 'proof', result_frame.pop('proof'))
 #    except:
 #        print("POD failed/ disabled")
+    result_frame = result_frame.apply(lambda row: define_zone(row), axis=1)
     print(f"{datetime.datetime.now()}: Constructed dataframe")
     return result_frame
 
