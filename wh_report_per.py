@@ -25,8 +25,7 @@ lima_zones=[]
 i = 0
 for feature in LIMA_ZONES_GEOMETRY['features']:
     st.write(i)
-    lima_zones[i] = i
-    #shapely.geometry.Polygon(feature['geometry']['coordinates'][0][0])
+    lima_zones.append(shapely.geometry.Polygon(feature['geometry']['coordinates'][0][0]))
     i = i + 1
 N_Districts=i
 st.write(i)
