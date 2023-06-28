@@ -39,7 +39,7 @@ def get_claims(secret, date_from, date_to, cursor=0):
         "created_from": f"{date_from}T00:00:00{timezone_offset}",
         "created_to": f"{date_to}T23:59:59{timezone_offset}",
         "limit": 1000,
-        "cursor": cursor
+        "cursor": cursor,
         "status": "performer_lookup"
     }) if cursor == 0 else json.dumps({"cursor": cursor})
 
