@@ -21,7 +21,7 @@ FILE_BUFFER = io.BytesIO()
 
 LIMA_ZONES_LINK=r"https://raw.githubusercontent.com/rorumyantsev/Check_district/main/lima_callao_distritos.geojson"
 LIMA_ZONES_GEOMETRY=json.loads(open('lima_callao_distritos.geojson').read())
-#lima_zones[]
+lima_zones=[]
 i = 0
 for feature in LIMA_ZONES_GEOMETRY['features']:
     lima_zone[i] = shapely.geometry.MultiPolygon(feature)
