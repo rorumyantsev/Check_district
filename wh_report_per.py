@@ -33,10 +33,10 @@ N_Districts = i
 #st.write(i)
 
 def define_zone(row):
-    row("zone") = "No District/ERROR"
+    row["zone"] = "No District/ERROR"
     for i in range(N_Districts):
         if lima_zones_polygon[i].contains(Point([row["lon"], row["lat"]])):
-            row("zone") = lima_zones_names[i]
+            row["zone"] = lima_zones_names[i]
 return row
             
     
