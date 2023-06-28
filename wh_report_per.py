@@ -24,7 +24,7 @@ LIMA_ZONES_GEOMETRY=json.loads(open('lima_callao_distritos.geojson').read())
 #lima_zones[]
 i = 0
 for feature in LIMA_ZONES_GEOMETRY['features']:
-    lima_zone[i]: MultiPolygon = shapely.geometry.shape(feature)
+    lima_zone[i] = shapely.geometry.MultiPolygon(feature)
     i = i + 1
 N_Districts=i
 st.write(i)
