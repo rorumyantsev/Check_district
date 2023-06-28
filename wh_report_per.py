@@ -247,7 +247,7 @@ if option != "Received":
     col1.metric(f"Delivered {option.lower()} :package:", delivered_today)
 
 
-
+filtered_frame = df
 print(f"{datetime.datetime.now()}: Displaying dataframe")
 st.dataframe(filtered_frame)
 
