@@ -7,6 +7,8 @@ import io
 import streamlit as st
 import pydeck as pdk
 import dateutil.parser
+import shapely
+from shapely.geometry import Point, Polygon, MultiPolygon
 
 st.set_page_config(layout="wide")
 
@@ -19,7 +21,15 @@ FILE_BUFFER = io.BytesIO()
 
 LIMA_ZONES_LINK=r"https://raw.githubusercontent.com/rorumyantsev/Check_district/main/lima_callao_distritos.geojson"
 LIMA_ZONES_GEOMETRY=json.loads(open('lima_callao_distritos.geojson').read())
-def define_zone(row):
+lima_zones: MultiPoligon[]
+i = 0
+for feature in LIMA_ZONES_GEOMETRY['features']:
+    lima_zone[i] = shapely.geometry.shape(feature)
+    i = i + 1
+N_Districts=i
+st.write(i)
+
+#def define_zone(row):
     
 
 def get_claims(secret, date_from, date_to, cursor=0):
