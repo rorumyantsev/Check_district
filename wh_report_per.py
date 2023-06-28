@@ -222,11 +222,11 @@ if st.sidebar.button("Refresh data 🔮", type="primary"):
     st.cache_data.clear()
 st.sidebar.caption(f"Page reload doesn't refresh the data.\nInstead, use this button to get a fresh report")
 
-option = st.sidebar.selectbox(
-    "Select report date:",
-    ["Weekly", "Monthly", "Received", "Today", "Yesterday", "Tomorrow"]  # Disabled Monthly for now
-)
-
+#option = st.sidebar.selectbox(
+#    "Select report date:",
+#    ["Weekly", "Monthly", "Received", "Today", "Yesterday", "Tomorrow"]  # Disabled Monthly for now
+#)
+option = "Received"
 
 @st.cache_data(ttl=1800.0)
 def get_cached_report(option):
@@ -237,56 +237,16 @@ def get_cached_report(option):
 df = get_cached_report(option)        
 delivered_today = len(df[df['status'].isin(['delivered', 'delivered_finish'])])
 
-statuses = st.sidebar.multiselect(
-    'Filter by status:',
-    ['delivered',
-     'pickuped',
-     'returning',
-     'cancelled_by_taxi',
-     'delivery_arrived',
-     'cancelled',
-     'performer_lookup',
-     'performer_found',
-     'performer_draft',
-     'returned_finish',
-     'performer_not_found',
-     'return_arrived',
-     'delivered_finish',
-     'failed',
-     'accepted',
-     'new',
-     'pickup_arrived'])
 
-print(f"{datetime.datetime.now()}: Get courier list for filters")
-couriers = st.sidebar.multiselect(
-    "Filter by courier:",
-    df["courier_name"].unique()
-)
 
-without_cancelled = st.sidebar.checkbox("Without cancels")
 
-print(f"{datetime.datetime.now()}: Filtering cancels")
-if without_cancelled:
-    df = df[~df["status"].isin(["cancelled", "performer_not_found", "failed", "cancelled_by_taxi"])]
 
 print(f"{datetime.datetime.now()}: Displaying metrics")
 if option != "Received":
     col1, col2, col3 = st.columns(3)
     col1.metric(f"Delivered {option.lower()} :package:", delivered_today)
 
-print(f"{datetime.datetime.now()}: Applying status filters")
-if not statuses or statuses == []:
-    filtered_frame = df
-else:
-    filtered_frame = df[df['status'].isin(statuses)]
 
-print(f"{datetime.datetime.now()}: Applying courier filters")
-if couriers:
-    filtered_frame = filtered_frame[filtered_frame['courier_name'].isin(couriers)]
-
-if option == "Received":
-    print("Filtering for only performer_lookup (received orders)")
-    filtered_frame = filtered_frame[filtered_frame['status'].isin(["performer_lookup"])]
 
 print(f"{datetime.datetime.now()}: Displaying dataframe")
 st.dataframe(filtered_frame)
