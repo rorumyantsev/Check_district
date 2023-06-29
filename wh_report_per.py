@@ -57,6 +57,8 @@ def get_geofix_report():
 #    st.write(payload)
     r = requests.request("GET", url, headers=headers, data=payload)
     geofix_report_file = r.content
+    geofix_report_df = pandas.read_excel(geofix_report_file)
+    st.write(geofix_report_df)
 #    st.write(r.status_code)
     return r
 
