@@ -20,6 +20,7 @@ API_URL = st.secrets["API_URL"]
 GEOFIX_SECRET = st.secrets["GEOFIX_SECRET"]
 GEOFIX_URL = st.secrets["GEOFIX_URL"]
 FILE_BUFFER = io.BytesIO()
+geofix_report_file = io.BytesIO()
 
 LIMA_ZONES_LINK=r"https://raw.githubusercontent.com/rorumyantsev/Check_district/main/lima_callao_distritos.geojson"
 LIMA_ZONES_GEOMETRY=json.loads(open('lima_callao_distritos.geojson').read())
@@ -55,6 +56,7 @@ def get_geofix_report():
 #    st.write(headers)
 #    st.write(payload)
     r = requests.request("GET", url, headers=headers, data=payload)
+    geofix_report_file = r.content
 #    st.write(r.status_code)
     return r
 
