@@ -43,7 +43,7 @@ def define_zone(row):
             
 def get_geofix_report():
     client_timezone = "America/Lima"
-    today = datetime.datetime.now(timezone(client_timezone)) - datetime.timedelta(days=offset_back)
+    today = datetime.datetime.now(timezone(client_timezone))
     search_from = today.replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(days=3)
     search_to = today.replace(hour=23, minute=59, second=59, microsecond=999999)
     date_from = search_from.strftime("%Y-%m-%d")
