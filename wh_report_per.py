@@ -49,7 +49,7 @@ def get_geofix_report():
     date_from = search_from.strftime("%Y-%m-%d")
     date_to = search_to.strftime("%Y-%m-%d")
     url = GEOFIX_URL
-    headers = {'Authorization': f"Bearer %GEOFIX_SECRET"}
+    headers = {'Authorization': f"Bearer {GEOFIX_SECRET}"}
     payload = {'fromDate': date_from, 'toDate': date_to}
     st.write(url)
     st.write(headers)
