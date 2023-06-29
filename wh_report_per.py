@@ -50,7 +50,10 @@ def get_geofix_report():
     date_to = search_to.strftime("%Y-%m-%d")
     url = GEOFIX_URL
     headers = {'Authorization': f"Bearer %GEOFIX_SECRET"}
-    payload = {'fromDate': f"%date_from", 'toDate': f"%date_to"}
+    payload = {'fromDate': date_from, 'toDate': date_to}
+    st.write(url)
+    st.write(headers)
+    st.write(payload)
     r.requests.get(url, headers=headers, params=payload)
     st.write(r.status_code)
     return r
