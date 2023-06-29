@@ -54,7 +54,7 @@ def get_geofix_report():
     st.write(url)
     st.write(headers)
     st.write(payload)
-    r.requests.get(url, headers=headers, params=payload)
+    r.requests.request("GET", url, headers=headers, params=payload)
     st.write(r.status_code)
     return r
 
