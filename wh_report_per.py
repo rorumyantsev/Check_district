@@ -51,14 +51,11 @@ def get_geofix_report():
     url = GEOFIX_URL
     headers = {'Authorization': f"Bearer {GEOFIX_SECRET}"}
     payload = {'fromDate': date_from, 'toDate': date_to}
-    st.write(url)
-    st.write(headers)
-    st.write(payload)
-    try:
-        r = requests.request("GET", url, headers=headers, data=payload)
-    except Exception as e:
-        st.write(f'caught {type(e)}: {e}')
-    st.write(r.status_code)
+#    st.write(url)
+#    st.write(headers)
+#    st.write(payload)
+    r = requests.request("GET", url, headers=headers, data=payload)
+#    st.write(r.status_code)
     return r
 
 
