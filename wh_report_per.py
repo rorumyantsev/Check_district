@@ -54,7 +54,10 @@ def get_geofix_report():
     st.write(url)
     st.write(headers)
     st.write(payload)
-    r.requests.request("GET", url, headers=headers, data=payload)
+    try:
+        r.requests.request("GET", url, headers=headers, data=payload)
+    except Exception as e:
+        print(f'caught {type(e)}: e')
     st.write(r.status_code)
     return r
 
