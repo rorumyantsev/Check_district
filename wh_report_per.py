@@ -17,6 +17,8 @@ CLIENT_LIST = st.secrets["CLIENTS"]
 #SHEET_KEY = st.secrets["SHEET_KEY"]
 #SHEET_ID = st.secrets["SHEET_ID"]
 API_URL = st.secrets["API_URL"]
+GEOFIX_SECRET = st.secrets["GEOFIX_SECRET"]
+GEOFIX_URL = st.secrets["GEOFIX_URL"]
 FILE_BUFFER = io.BytesIO()
 
 LIMA_ZONES_LINK=r"https://raw.githubusercontent.com/rorumyantsev/Check_district/main/lima_callao_distritos.geojson"
@@ -39,7 +41,20 @@ def define_zone(row):
             row["zone"] = lima_zones_names[i]
     return row
             
-    
+def get_geofix_report():
+    client_timezone = "America/Lima"
+    today = datetime.datetime.now(timezone(client_timezone)) - datetime.timedelta(days=offset_back)
+    search_from = today.replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(days=3)
+    search_to = today.replace(hour=23, minute=59, second=59, microsecond=999999)
+    date_from = search_from.strftime("%Y-%m-%d")
+    date_to = search_to.strftime("%Y-%m-%d")
+    url = GEOFIX_URL
+    headers = {'Authorization': f"Bearer %GEOFIX_SECRET"}
+    payload = {'fromDate': f"%date_from", 'toDate': f"%date_to"}
+    r.requests.get(url, headers=headers, params=payload)
+    st.write(r.status_code)
+    return r
+
 
 def get_claims(secret, date_from, date_to, cursor=0):
     url = API_URL
@@ -217,7 +232,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
 
 
 st.markdown(f"# Peru warehouse routes report")
-
+get_geofix_report()
 if st.sidebar.button("Refresh data 🔮", type="primary"):
     st.cache_data.clear()
 st.sidebar.caption(f"Page reload doesn't refresh the data.\nInstead, use this button to get a fresh report")
