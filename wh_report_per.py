@@ -59,15 +59,13 @@ def check_district_geofix(row):
         else:
             for i in range(N_Districts):
                 if lima_zones_polygon[i].contains(Point([row["Log platform longitude"], row["Log platform latitude"]])):
-                    row["zone"] = lima_zones_names[i].lower
+                    row["zone"] = lima_zones_names[i]
             if type(row["Second Address Line"]) == str:
                 strcheck = True
             else:
                 strcheck = False
             if strcheck:
-                row["Second Address Line"] = row["Second Address Line"].lower
-                st.write(row["Second Address Line"],row["zone"])
-                if row["zone"].lower == row["Second Address Line"].lower:
+                if row["zone"].lower() == row["Second Address Line"].lower():
                     row["zone_comparison"] = "True"
                 else:
                     row["zone_comparison"] = "False"
