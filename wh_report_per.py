@@ -62,7 +62,10 @@ def get_geofix_report():
 #    st.write(r.headers)
     geofix_report_df = pandas.DataFrame(data={'col1': [1, 2], 'col2': [3, 4]})
     st.write(geofix_report_df)
-    geofix_report_df.pandas.read_excel(geofix_report_file)
+    try:
+        geofix_report_df.pandas.read_excel(geofix_report_file)
+    except Exception as e:
+        st.write(e)
     st.write(geofix_report_df)
     st.write(r.status_code)
     return r
