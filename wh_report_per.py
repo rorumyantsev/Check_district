@@ -46,7 +46,7 @@ def define_zone(row):
 
 def check_district_geofix(row):
     row["zone"] = "No District/ERROR"
-    if not(len(row["Log platform latitude"])!=0 and len(row["Log platform longitude"])!=0 and len(row["Second Address Line"])>=1):
+    if not(row["Log platform latitude"]!=0 and row["Log platform longitude"]!=0 and len(row["Second Address Line"])>=1):
         row["zone_comparison"] = "Not enough data"
     else:
         for i in range(N_Districts):
