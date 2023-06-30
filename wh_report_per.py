@@ -46,9 +46,9 @@ def define_zone(row):
 
 def check_district_geofix(row):
     row["zone"] = "No District/ERROR"
-    st.write(type(row["Log platform latitude"]))
-    st.write(type(row["Log platform longitude"]))
-    st.write(type(row["Second Address Line"]))
+    st.write(type(row["Log platform latitude"]),row["Log platform latitude"])
+    st.write(type(row["Log platform longitude"]),row["Log platform longitude"])
+    st.write(type(row["Second Address Line"]),row["Second Address Line"])
     if (row["Log platform latitude"] is None or row["Log platform longitude"] is None or row["Second Address Line"] is None):
         row["zone_comparison"] = "Not enough data"
     else:
