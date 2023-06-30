@@ -60,8 +60,9 @@ def get_geofix_report():
     geofix_report_file = r.content
 #    st.write(r.content)
 #    st.write(r.headers)
-    
-    geofix_report_df = pandas.read_excel(geofix_report_file)
+    geofix_report_df = pandas.DataFrame(data={'col1': [1, 2], 'col2': [3, 4]})
+    st.write(geofix_report_df)
+    geofix_report_df.pandas.read_excel(geofix_report_file)
     st.write(geofix_report_df)
     st.write(r.status_code)
     return r
