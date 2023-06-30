@@ -60,17 +60,10 @@ def get_geofix_report():
     geofix_report_file = r.content
 #    st.write(r.content)
 #    st.write(r.headers)
-    st.write(r.url)
-    st.download_button(
-        label="Download report as xlsx",
-        data=geofix_report_file,
-        file_name="geofix_report.xlsx",
-        mime="application/vnd.ms-excel"
-    )
     
-#    geofix_report_df = pandas.read_excel(geofix_report_file)
-#    st.write(geofix_report_df)
-#    st.write(r.status_code)
+    geofix_report_df = pandas.read_excel(geofix_report_file)
+    st.write(geofix_report_df)
+    st.write(r.status_code)
     return r
 
 
