@@ -23,6 +23,7 @@ API_URL = st.secrets["API_URL"]
 GEOFIX_SECRET = st.secrets["GEOFIX_SECRET"]
 GEOFIX_URL = st.secrets["GEOFIX_URL"]
 FILE_BUFFER = io.BytesIO()
+FILE_BUFFER_GEOFIX = io.BytesIO()
 geofix_report_file = io.BytesIO()
 
 LIMA_ZONES_LINK=r"https://raw.githubusercontent.com/rorumyantsev/Check_district/main/lima_callao_distritos.geojson"
@@ -93,8 +94,8 @@ def get_geofix_report():
         st.write(e)
     filtered_report_df = geofix_report_df[~geofix_report_df["Internal Status"].isin(["Delivered"])]
     filtered_report_df = filtered_report_df.apply(lambda row: check_district_geofix(row), axis=1)
-    st.write(filtered_report_df)
-    return geofix_report_df
+    #st.write(filtered_report_df)
+    return filtered_report_df
 
 
 
@@ -274,10 +275,21 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
 
 
 st.markdown(f"# Peru warehouse routes report")
-if st.button("run geofix report test"):
-    get_geofix_report()
-else:
-    st.write("don't press it, unless you know why you're Roman Rumyantsev")
+if st.sidebar.button("run geofix report test, don't press it often"):
+    geofix_df = get_geofix_report()
+    filtered_geofix_df = geofix_df[geofix_df["zone_comparison"].isin(["False"])]
+    st.write(filtered_geofix_df)
+    with pandas.ExcelWriter(FILE_BUFFER_GEOFIX, engine='xlsxwriter') as writer:
+        geofix_df.to_excel(writer, sheet_name='geofix_report')
+        writer.close()
+    
+        st.download_button(
+            label="Download geofix report as xlsx",
+            data=FILE_BUFFER_GEOFIX,
+            file_name=f"geofix_report_{TODAY}.xlsx",
+            mime="application/vnd.ms-excel"
+        )
+
 if st.sidebar.button("Refresh data 🔮", type="primary"):
     st.cache_data.clear()
 st.sidebar.caption(f"Page reload doesn't refresh the data.\nInstead, use this button to get a fresh report")
