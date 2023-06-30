@@ -9,6 +9,7 @@ import pydeck as pdk
 import dateutil.parser
 import shapely
 from shapely.geometry import Point, Polygon, MultiPolygon
+import time
 
 st.set_page_config(layout="wide")
 
@@ -56,6 +57,7 @@ def get_geofix_report():
 #    st.write(headers)
 #    st.write(payload)
     r = requests.request("GET", url, headers=headers, data=payload)
+    time.sleep(20)
     geofix_report_file = r.content
     st.download_button(
         label="Download report as xlsx",
