@@ -263,7 +263,10 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
 
 
 st.markdown(f"# Peru warehouse routes report")
-get_geofix_report()
+if st.button("run geofix report test"):
+    get_geofix_report()
+else:
+    st.write("don't press it, unless you know why you're Roman Rumyantsev")
 if st.sidebar.button("Refresh data 🔮", type="primary"):
     st.cache_data.clear()
 st.sidebar.caption(f"Page reload doesn't refresh the data.\nInstead, use this button to get a fresh report")
