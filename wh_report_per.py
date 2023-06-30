@@ -58,6 +58,7 @@ def get_geofix_report():
 #    st.write(payload)
     r = requests.request("GET", url, headers=headers, data=payload)
     geofix_report_file = r.content
+    st.write(r.content)
     st.write(r.headers)
     st.download_button(
         label="Download report as xlsx",
