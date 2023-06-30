@@ -66,6 +66,7 @@ def check_district_geofix(row):
                 strcheck = False
             if strcheck:
                 row["Second Address Line"] = row["Second Address Line"].lower
+                st.write(row["Second Address Line"],row["zone"])
                 if row["zone"].lower == row["Second Address Line"].lower:
                     row["zone_comparison"] = "True"
                 else:
