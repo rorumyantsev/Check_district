@@ -50,7 +50,7 @@ def check_district_geofix(row):
     st.write(row["Log platform longitude"])
     st.write(row["Second Address Line"])
     
-    if not(row["Log platform latitude"]!=0 and row["Log platform longitude"]!=0 and len(row["Second Address Line"])>=1):
+    if not((row["Log platform latitude"] is None or row["Log platform latitude"]!=0) and (row["Log platform longitude"] is None or row["Log platform longitude"]!=0) and (row["Second Address Line"] is None or len(row["Second Address Line"])>=1)):
         row["zone_comparison"] = "Not enough data"
     else:
         for i in range(N_Districts):
