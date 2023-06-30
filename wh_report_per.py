@@ -49,17 +49,19 @@ def check_district_geofix(row):
     #st.write(row["Log platform latitude"])
     #st.write(row["Log platform longitude"])
     #st.write(row["Second Address Line"])
-    
-    if not((row["Log platform latitude"] is None or row["Log platform latitude"]!=0) and (row["Log platform longitude"] is None or row["Log platform longitude"]!=0) and (row["Second Address Line"] is None or len(row["Second Address Line"])>=1)):
+    if (row["Log platform latitude"] is None or row["Log platform longitude"] is None or row["Second Address Line"] is None):
         row["zone_comparison"] = "Not enough data"
     else:
-        for i in range(N_Districts):
-            if lima_zones_polygon[i].contains(Point([row["Log platform longitude"], row["Log platform latitude"]])):
-                row["zone"] = lima_zones_names[i]
-        if row["zone"].lower == row["Second Address Line"].lower:
-            row["zone_comparison"] = "True"
+        if not(row["Log platform latitude"]!=0 and row["Log platform longitude"]!=0 and len(row["Second Address Line"])>=1):
+            row["zone_comparison"] = "Not enough data"
         else:
-            row["zone_comparison"] = "False"
+            for i in range(N_Districts):
+                if lima_zones_polygon[i].contains(Point([row["Log platform longitude"], row["Log platform latitude"]])):
+                    row["zone"] = lima_zones_names[i]
+            if row["zone"].lower == row["Second Address Line"].lower:
+                row["zone_comparison"] = "True"
+            else:
+                row["zone_comparison"] = "False"
     return row
 
 def get_geofix_report():
