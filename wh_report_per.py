@@ -63,8 +63,8 @@ def get_geofix_report():
     except Exception as e:
         st.write(e)
     filtered_report_df = geofix_report_df[~geofix_report_df["Internal Status"].isin(["Delivered"])]
-    filtered_report_df = filtered_report_df[~filtered_report_df["Log platform latitude"].isin([""])]
-    filtered_report_df = filtered_report_df[~filtered_report_df["Second Address Line"].isin([""])]
+    filtered_report_df = filtered_report_df[~filtered_report_df["Log platform latitude"].isin(["",None])]
+    filtered_report_df = filtered_report_df[~filtered_report_df["Second Address Line"].isin(["",None])]
     st.write(filtered_report_df)
     return geofix_report_df
 
