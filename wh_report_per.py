@@ -49,7 +49,7 @@ def check_district_geofix(row):
     row["zone"] = "No District/ERROR"
     if type(row["Second Address Line"]) == str:
         strcheck = False
-    else
+    else:
         strcheck = True
     if (numpy.isnan(row["Log platform latitude"]) or numpy.isnan(row["Log platform longitude"]) or strcheck):
         row["zone_comparison"] = "Not enough data"
