@@ -11,6 +11,7 @@ import shapely
 #import openpyxl
 from shapely.geometry import Point, Polygon, MultiPolygon
 import time
+import numpy
 
 st.set_page_config(layout="wide")
 
