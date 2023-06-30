@@ -63,7 +63,7 @@ def get_geofix_report():
     except Exception as e:
         st.write(e)
     filtered_report_df = geofix_report_df[~geofix_report_df["Internal Status"].isin(["delivered"])]
-    filtered_report_df = filtered_report_df[geofix_report_df["Log platform latitude"] is not None]
+    filtered_report_df = filtered_report_df[~filtered_report_df["Log platform latitude"].isin([""])]
     st.write(filtered_report_df)
     return geofix_report_df
 
