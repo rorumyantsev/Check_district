@@ -43,7 +43,21 @@ def define_zone(row):
         if lima_zones_polygon[i].contains(Point([row["lon"], row["lat"]])):
             row["zone"] = lima_zones_names[i]
     return row
-            
+
+def check_district_geofix(row):
+    row["zone"] = "No District/ERROR"
+    if not(len(row["Log platform latitude"])>=1 and len(row["Log platform longitude"])>=1 and len(row["Second Address Line"])>=1):
+        row["zone_comparison"] = "Not enough data"
+    else:
+        for i in range(N_Districts):
+            if lima_zones_polygon[i].contains(Point([row["Log platform longitude"], row["Log platform latitude"]])):
+                row["zone"] = lima_zones_names[i]
+        if row["zone"].lower == row["Second Address Line"].lower:
+            row["zone_comparison"] = "True"
+        else:
+            row["zone_comparison"] = "False"
+    return row
+
 def get_geofix_report():
     client_timezone = "America/Lima"
     today = datetime.datetime.now(timezone(client_timezone))
@@ -65,8 +79,10 @@ def get_geofix_report():
     filtered_report_df = geofix_report_df[~geofix_report_df["Internal Status"].isin(["Delivered"])]
     filtered_report_df = filtered_report_df[~filtered_report_df["Log platform latitude"].isin(["",None])]
     filtered_report_df = filtered_report_df[~filtered_report_df["Second Address Line"].isin(["",None])]
+    filtered_report_df = filtered_report_df.apply(lambda row: find_district_geofix(row), axis=1)
     st.write(filtered_report_df)
     return geofix_report_df
+
 
 
 def get_claims(secret, date_from, date_to, cursor=0):
@@ -245,7 +261,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
 
 
 st.markdown(f"# Peru warehouse routes report")
-#get_geofix_report()
+get_geofix_report()
 if st.sidebar.button("Refresh data 🔮", type="primary"):
     st.cache_data.clear()
 st.sidebar.caption(f"Page reload doesn't refresh the data.\nInstead, use this button to get a fresh report")
