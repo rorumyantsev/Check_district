@@ -56,12 +56,15 @@ def get_geofix_report():
     payload = {'fromDate': date_from, 'toDate': date_to}
     r = requests.get(url, headers=headers, params=payload)
     geofix_report_file = r.content
-    geofix_report_df = pandas.DataFrame(data={'col1': [1, 2], 'col2': [3, 4]})
-    st.write(geofix_report_df)
+    #geofix_report_df = pandas.DataFrame(data={'col1': [1, 2], 'col2': [3, 4]})
+    #st.write(geofix_report_df)
     try:
         geofix_report_df = pandas.read_excel(geofix_report_file)
     except Exception as e:
         st.write(e)
+    filtered_report_df = geofix_report_df[~geofix_report_df["internal status"].isin(["delivered"])]
+    filtered_report_df = filtered_report_df[geofix_report_df["lat"] is not None]
+    st.write(filtered_report_df)
     return geofix_report_df
 
 
@@ -241,7 +244,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
 
 
 st.markdown(f"# Peru warehouse routes report")
-#get_geofix_report()
+get_geofix_report()
 if st.sidebar.button("Refresh data 🔮", type="primary"):
     st.cache_data.clear()
 st.sidebar.caption(f"Page reload doesn't refresh the data.\nInstead, use this button to get a fresh report")
