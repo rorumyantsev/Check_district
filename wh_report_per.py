@@ -51,19 +51,26 @@ def check_district_geofix(row):
         strcheck = False
     else:
         strcheck = True
-    if (numpy.isnan(row["Log platform latitude"]) or numpy.isnan(row["Log platform longitude"]) or strcheck):
+    if (numpy.isnan(row["Log platform latitude"]) or numpy.isnan(row["Log platform longitude"])):
         row["zone_comparison"] = "Not enough data"
     else:
-        if not(row["Log platform latitude"]!=0 and row["Log platform longitude"]!=0 and len(row["Second Address Line"])>=1):
+        if not(row["Log platform latitude"]!=0 and row["Log platform longitude"]!=0):
             row["zone_comparison"] = "Not enough data"
         else:
             for i in range(N_Districts):
                 if lima_zones_polygon[i].contains(Point([row["Log platform longitude"], row["Log platform latitude"]])):
                     row["zone"] = lima_zones_names[i]
-            if row["zone"].lower == row["Second Address Line"].lower:
-                row["zone_comparison"] = "True"
+            if type(row["Second Address Line"]) == str:
+                strcheck = True
             else:
-                row["zone_comparison"] = "False"
+                strcheck = False
+            if strcheck:
+                if row["zone"].lower == row["Second Address Line"].lower:
+                    row["zone_comparison"] = "True"
+                else:
+                    row["zone_comparison"] = "False"
+            else:
+                row["zone_comparison"] = "Not enough data"
     return row
 
 def get_geofix_report():
