@@ -62,8 +62,8 @@ def get_geofix_report():
         geofix_report_df = pandas.read_excel(geofix_report_file)
     except Exception as e:
         st.write(e)
-    filtered_report_df = geofix_report_df[~geofix_report_df["internal status"].isin(["delivered"])]
-    filtered_report_df = filtered_report_df[geofix_report_df["lat"] is not None]
+    filtered_report_df = geofix_report_df[~geofix_report_df["Internal Status"].isin(["delivered"])]
+    filtered_report_df = filtered_report_df[geofix_report_df["Log platform latitude"] is not None]
     st.write(filtered_report_df)
     return geofix_report_df
 
