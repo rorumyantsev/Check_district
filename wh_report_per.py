@@ -25,6 +25,7 @@ GEOFIX_URL = st.secrets["GEOFIX_URL"]
 FILE_BUFFER = io.BytesIO()
 FILE_BUFFER_GEOFIX = io.BytesIO()
 geofix_report_file = io.BytesIO()
+client_timezone = "America/Lima"
 
 LIMA_ZONES_LINK=r"https://raw.githubusercontent.com/rorumyantsev/Check_district/main/lima_callao_distritos.geojson"
 LIMA_ZONES_GEOMETRY=json.loads(open('lima_callao_distritos.geojson').read())
@@ -140,7 +141,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
     elif option == "Received":
         offset_back = 0
     
-    client_timezone = "America/Lima"
+
 
     if option == "Monthly":
         start_ = "2023-05-01"
