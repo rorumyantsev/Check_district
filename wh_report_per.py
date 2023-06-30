@@ -47,10 +47,11 @@ def define_zone(row):
 
 def check_district_geofix(row):
     row["zone"] = "No District/ERROR"
-    st.write(type(row["Log platform latitude"]),row["Log platform latitude"],row["Log platform latitude"] == numpy.nan)
-    st.write(type(row["Log platform longitude"]),row["Log platform longitude"],row["Log platform longitude"] == numpy.nan)
-    st.write(type(row["Second Address Line"]),row["Second Address Line"],numpy.isnan(row["Second Address Line"]))
-    if (row["Log platform latitude"] == numpy.nan or row["Log platform longitude"] == numpy.nan or row["Second Address Line"] == numpy.nan):
+    if type(row["Second Address Line"]) == str:
+        strcheck = False
+    else
+        strcheck = True
+    if (numpy.isnan(row["Log platform latitude"]) or numpy.isnan(row["Log platform longitude"]) or strcheck):
         row["zone_comparison"] = "Not enough data"
     else:
         if not(row["Log platform latitude"]!=0 and row["Log platform longitude"]!=0 and len(row["Second Address Line"])>=1):
