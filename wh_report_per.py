@@ -83,11 +83,9 @@ def get_geofix_report():
     date_from = search_from.strftime("%Y-%m-%d")
     date_to = search_to.strftime("%Y-%m-%d")
     url = GEOFIX_URL
-    #headers = {'Authorization': f"Bearer {GEOFIX_SECRET}"}
-    #payload = {'fromDate': date_from, 'toDate': date_to}
-    #r = requests.get(url, headers=headers, params=payload)
-    payload = {'fromDate': date_from, 'toDate': date_to,'login':"agrishchenko",'password':"davite"}
-    r = requests.get(url, params=payload)
+    headers = {'Authorization': f"Bearer {GEOFIX_SECRET}"}
+    payload = {'fromDate': date_from, 'toDate': date_to}
+    r = requests.get(url, headers=headers, params=payload)
     geofix_report_file = r.content
     #geofix_report_df = pandas.DataFrame(data={'col1': [1, 2], 'col2': [3, 4]})
     #st.write(geofix_report_df)
