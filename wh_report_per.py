@@ -276,22 +276,22 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
 
 
 st.markdown(f"# Peru warehouse routes report")
-if st.sidebar.button("geofix report"):
-    geofix_df = get_geofix_report()
-    filtered_geofix_df = geofix_df[geofix_df["zone_comparison"].isin(["False"])]
-    st.write(filtered_geofix_df)
-    TODAY = datetime.datetime.now(timezone(client_timezone)).strftime("%Y-%m-%d")
-    with pandas.ExcelWriter(FILE_BUFFER_GEOFIX, engine='xlsxwriter') as writer:
-        geofix_df.to_excel(writer, sheet_name='geofix_report')
-        writer.close()
-    
-        st.download_button(
-            label="Download geofix report as xlsx",
-            data=FILE_BUFFER_GEOFIX,
-            file_name=f"geofix_report_{TODAY}.xlsx",
-            mime="application/vnd.ms-excel"
-        )
-st.sidebar.caption("don't press geofix report button more than 4 times a day")
+#if st.sidebar.button("geofix report"):
+#    geofix_df = get_geofix_report()
+#    filtered_geofix_df = geofix_df[geofix_df["zone_comparison"].isin(["False"])]
+#    st.write(filtered_geofix_df)
+#    TODAY = datetime.datetime.now(timezone(client_timezone)).strftime("%Y-%m-%d")
+#    with pandas.ExcelWriter(FILE_BUFFER_GEOFIX, engine='xlsxwriter') as writer:
+#        geofix_df.to_excel(writer, sheet_name='geofix_report')
+#        writer.close()
+#    
+#        st.download_button(
+#            label="Download geofix report as xlsx",
+#            data=FILE_BUFFER_GEOFIX,
+#            file_name=f"geofix_report_{TODAY}.xlsx",
+#            mime="application/vnd.ms-excel"
+#        )
+#st.sidebar.caption("don't press geofix report button more than 4 times a day")
 
 if st.sidebar.button("Refresh data 🔮", type="primary"):
     st.cache_data.clear()
