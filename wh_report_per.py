@@ -38,6 +38,8 @@ for feature in LIMA_ZONES_GEOMETRY['features']:
     lima_zones_names.append(feature['properties']['distrito'])
     i = i + 1
 N_Districts = i 
+for district in lima_zones_names:
+    st.write(district)
 #st.write(i)
 
 def define_zone(row):
