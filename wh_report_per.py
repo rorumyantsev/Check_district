@@ -52,7 +52,7 @@ def define_zone(row):
         if lima_zones_polygon[i].contains(Point([row["lon"], row["lat"]])):
             row["zone_coord"] = lima_zones_names[i]
     for district in districts_dict:
-        if row["client_comment"].find(district)!=-1:
+        if row["client_comment"].lower().find(district.lower())!=-1:
             row["district_adr"]=districts_dict[district]
     
     return row
