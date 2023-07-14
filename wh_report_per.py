@@ -53,7 +53,7 @@ def define_zone(row):
             row["zone_coord"] = lima_zones_names[i]
     for district in districts_dict:
         if row["client_comment"].lower().find(district.lower())!=-1:
-            row["district_adr"]=districts_dict[district]
+            row["zone_adr"]=districts_dict[district]
     
     return row
 
@@ -322,9 +322,6 @@ def get_cached_report(option):
 df = get_cached_report(option)        
 delivered_today = len(df[df['status'].isin(['delivered', 'delivered_finish'])])
 
-for district in districts_dict:
-    st.write(district)
-    st.write(df["client_comment"][0].lower().find(district.lower()))
 
 
 
