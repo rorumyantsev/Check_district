@@ -41,10 +41,11 @@ N_Districts = i
 #for district in lima_zones_names:
 #    st.write(district)
 #st.write(i)
-for destrict in district_dict:
-    st.write(district + district_dict[district])
+
 
 districts_dict = json.loads(open('Districts_dict.txt').read())
+for district in districts_dict:
+    st.write(district + districts_dict[district])
 
 
 def define_zone(row):
