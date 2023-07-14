@@ -263,7 +263,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                    report_pod_point_id, report_pickup_address, report_receiver_address, report_receiver_phone, report_receiver_name, report_comment,
                    report_courier_name, report_courier_park,
                    report_return_reason, report_route_id,
-                   report_longitude, report_latitude, report_store_longitude, report_store_latitude, report_corp_id, report_point_B_time]
+                   report_longitude, report_latitude, report_store_longitude, report_store_latitude, report_corp_id, report_point_B_time,"",""]
             report.append(row)
         i = i + 1
     
@@ -273,7 +273,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                                              "pod_point_id", "pickup_address", "receiver_address", "receiver_phone",
                                              "receiver_name", "client_comment", "courier_name", "courier_park",
                                              "return_reason", "route_id", "lon", "lat", "store_lon", "store_lat",
-                                             "corp_client_id", "point_B_time"])
+                                             "corp_client_id", "point_B_time","zone_coord", "zone_adr"])
 #     orders_with_pod = get_pod_orders()
 #     result_frame = result_frame.apply(lambda row: check_for_pod(row, orders_with_pod), axis=1)
 #    try:
