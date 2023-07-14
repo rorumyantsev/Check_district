@@ -44,15 +44,16 @@ N_Districts = i
 
 
 districts_dict = json.loads(open('Districts_dict.txt').read())
-for district in districts_dict:
-    st.write(district + districts_dict[district])
 
 
 def define_zone(row):
-    row["zone"] = "No District/ERROR"
+    row["zone_coord"] = "No District/ERROR"
     for i in range(N_Districts):
         if lima_zones_polygon[i].contains(Point([row["lon"], row["lat"]])):
-            row["zone"] = lima_zones_names[i]
+            row["zone_coord"] = lima_zones_names[i]
+    for district in districts_dict:
+        if row["comment"].find(district)>=0:
+            row["district_adr"]=districts_dict[district]
     
     return row
 
