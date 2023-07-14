@@ -27,6 +27,7 @@ FILE_BUFFER_GEOFIX = io.BytesIO()
 geofix_report_file = io.BytesIO()
 client_timezone = "America/Lima"
 
+# Get districts geometry
 LIMA_ZONES_LINK=r"https://raw.githubusercontent.com/rorumyantsev/Check_district/main/lima_callao_distritos.geojson"
 LIMA_ZONES_GEOMETRY=json.loads(open('lima_callao_distritos.geojson').read())
 lima_zones_polygon=[]
@@ -38,14 +39,11 @@ for feature in LIMA_ZONES_GEOMETRY['features']:
     lima_zones_names.append(feature['properties']['distrito'])
     i = i + 1
 N_Districts = i 
-#for district in lima_zones_names:
-#    st.write(district)
-#st.write(i)
 
-
+# Get possible districts namings and create dictionary out of it
 districts_dict = json.loads(open('Districts_dict.txt').read())
 
-
+# Calculate districts by coordinates and by original address string
 def define_zone(row):
     row["zone_coord"] = "No District/ERROR"
     for i in range(N_Districts):
@@ -57,6 +55,8 @@ def define_zone(row):
     
     return row
 
+'''
+# deprecated: compare districts with geofix report districts
 def check_district_geofix(row):
     row["zone"] = "No District/ERROR"
     if type(row["Second Address Line"]) == str:
@@ -84,7 +84,9 @@ def check_district_geofix(row):
             else:
                 row["zone_comparison"] = "Not enough data"
     return row
-
+'''
+'''
+# Deprecated: get geofix report
 def get_geofix_report():
     client_timezone = "America/Lima"
     today = datetime.datetime.now(timezone(client_timezone))
@@ -107,7 +109,7 @@ def get_geofix_report():
     filtered_report_df = filtered_report_df.apply(lambda row: check_district_geofix(row), axis=1)
     #st.write(filtered_report_df)
     return filtered_report_df
-
+'''
 
 
 def get_claims(secret, date_from, date_to, cursor=0):
