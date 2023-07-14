@@ -52,8 +52,6 @@ def define_zone(row):
         if lima_zones_polygon[i].contains(Point([row["lon"], row["lat"]])):
             row["zone_coord"] = lima_zones_names[i]
     for district in districts_dict:
-        st.write(district)
-        st.write(row["client_comment"].lower().find(district.lower()))
         if row["client_comment"].lower().find(district.lower())!=-1:
             row["district_adr"]=districts_dict[district]
     
@@ -324,7 +322,9 @@ def get_cached_report(option):
 df = get_cached_report(option)        
 delivered_today = len(df[df['status'].isin(['delivered', 'delivered_finish'])])
 
-
+for district in districts_dict:
+    st.write(district)
+    st.write(df["client_comment"][0].lower().find(district.lower()))
 
 
 
