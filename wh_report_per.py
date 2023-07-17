@@ -56,7 +56,7 @@ def define_zone(row):
     return row
 
 def check_for_returns (row, returns_df):
-    row["returns"] = len(returns_df[returns_df["unique_id"].isin([row("unique_id")])])
+    row["returns"] = len(returns_df[returns_df["unique_id"].isin([row["unique_id"]])])
     return row
 
 
