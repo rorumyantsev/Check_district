@@ -52,11 +52,17 @@ def define_zone(row):
     for district in districts_dict:
         if row["client_comment"].lower().find(district.lower())!=-1:
             row["zone_adr"]=districts_dict[district]
-    
+    if row["zone_adr"] == row["zone_coord"]:
+        row["matching"] = True
+    else:
+        row["matching"] = False
     return row
 
 def check_for_returns (row, returns_df):
-    row["returns"] = len(returns_df[returns_df["unique_id"].isin([row["unique_id"]])])
+    if len(returns_df[returns_df["unique_id"].isin([row["unique_id"]])])>0:
+        row["been_returned"] = True
+    else:
+        row["been_returned"] = False
     return row
 
 
@@ -214,7 +220,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                    report_pod_point_id, report_pickup_address, report_receiver_address, report_receiver_phone, report_receiver_name, report_comment,
                    report_courier_name, report_courier_park,
                    report_return_reason, report_route_id,
-                   report_longitude, report_latitude, report_store_longitude, report_store_latitude, report_corp_id, report_point_B_time,0,"","",report_client+report_barcode]
+                   report_longitude, report_latitude, report_store_longitude, report_store_latitude, report_corp_id, report_point_B_time,False,"","",report_client+report_barcode, False]
             report.append(row)
         i = i + 1
     
@@ -224,7 +230,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                                              "pod_point_id", "pickup_address", "receiver_address", "receiver_phone",
                                              "receiver_name", "client_comment", "courier_name", "courier_park",
                                              "return_reason", "route_id", "lon", "lat", "store_lon", "store_lat",
-                                             "corp_client_id", "point_B_time","returns", "zone_coord", "zone_adr", "unique_id"])
+                                             "corp_client_id", "point_B_time","been_returned", "zone_coord", "zone_adr", "unique_id", "matching"])
 #     orders_with_pod = get_pod_orders()
 #     result_frame = result_frame.apply(lambda row: check_for_pod(row, orders_with_pod), axis=1)
 #    try:
@@ -275,7 +281,18 @@ filtered_frame = df[df["status"].isin(["performer_lookup"])]
 filtered_frame = filtered_frame.apply(lambda row: check_for_returns(row, returns_df), axis=1)
 filtered_frame = filtered_frame.apply(lambda row: define_zone(row), axis=1)
 print(f"{datetime.datetime.now()}: Displaying dataframe")
-st.dataframe(filtered_frame)
+without_returns = st.sidebar.checkbox("Leave only orders that do not have returns in the past")
+without_matching = st.sidebar.checkbox("Leave only orders that require check")
+
+print_df = filtered_frame
+if without_returns:
+    print_df = print_df[print_df["been_returned"].isin([False])]
+if without_matching:
+    print_df = print_df[print_df["matching"].isin([False])]
+
+print_df = print_df.drop(columns = ["unique_id","matching"])
+filtered_frame = filtered_frame.drop(columns = ["unique_id","matching"])
+st.dataframe(print_df)
 
 client_timezone = "America/Santiago"
 TODAY = datetime.datetime.now(timezone(client_timezone)).strftime("%Y-%m-%d") \
