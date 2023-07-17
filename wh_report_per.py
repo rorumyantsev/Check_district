@@ -272,7 +272,7 @@ def get_cached_report(option):
 df = get_cached_report(option)        
 returns_df = df[df["status"].isin(["returning","returned","returned_finish"])]
 filtered_frame = df[df["status"].isin(["performer_lookup"])]
-filtered_frame = filtered_frame.apply(lambda row: chech_for_returns(row, returns_df), axis=1)
+filtered_frame = filtered_frame.apply(lambda row: check_for_returns(row, returns_df), axis=1)
 filtered_frame = filtered_frame.apply(lambda row: define_zone(row), axis=1)
 print(f"{datetime.datetime.now()}: Displaying dataframe")
 st.dataframe(filtered_frame)
