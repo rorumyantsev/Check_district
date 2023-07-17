@@ -55,6 +55,9 @@ def define_zone(row):
     
     return row
 
+def check_for_returns (row, returns_df):
+    row("returns")=len(returns_df[returns_df["unique_id"].isin([row("unique_id")])])
+    return row
 '''
 # deprecated: compare districts with geofix report districts
 def check_district_geofix(row):
@@ -120,7 +123,7 @@ def get_claims(secret, date_from, date_to, cursor=0):
         "created_to": f"{date_to}T23:59:59{timezone_offset}",
         "limit": 1000,
         "cursor": cursor,
-        "status": "performer_lookup"
+#        "status": "performer_lookup"
     }) if cursor == 0 else json.dumps({"cursor": cursor})
 
     headers = {
@@ -265,7 +268,7 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                    report_pod_point_id, report_pickup_address, report_receiver_address, report_receiver_phone, report_receiver_name, report_comment,
                    report_courier_name, report_courier_park,
                    report_return_reason, report_route_id,
-                   report_longitude, report_latitude, report_store_longitude, report_store_latitude, report_corp_id, report_point_B_time,"",""]
+                   report_longitude, report_latitude, report_store_longitude, report_store_latitude, report_corp_id, report_point_B_time,0,"","",report_client+report_barcode]
             report.append(row)
         i = i + 1
     
@@ -275,14 +278,13 @@ def get_report(option="Today", start_=None, end_=None) -> pandas.DataFrame:
                                              "pod_point_id", "pickup_address", "receiver_address", "receiver_phone",
                                              "receiver_name", "client_comment", "courier_name", "courier_park",
                                              "return_reason", "route_id", "lon", "lat", "store_lon", "store_lat",
-                                             "corp_client_id", "point_B_time","zone_coord", "zone_adr"])
+                                             "corp_client_id", "point_B_time","returns", "zone_coord", "zone_adr", "unique_id"])
 #     orders_with_pod = get_pod_orders()
 #     result_frame = result_frame.apply(lambda row: check_for_pod(row, orders_with_pod), axis=1)
 #    try:
 #        result_frame.insert(3, 'proof', result_frame.pop('proof'))
 #    except:
 #        print("POD failed/ disabled")
-    result_frame = result_frame.apply(lambda row: define_zone(row), axis=1)
     print(f"{datetime.datetime.now()}: Constructed dataframe")
     return result_frame
 
@@ -313,7 +315,7 @@ st.sidebar.caption(f"Page reload doesn't refresh the data.\nInstead, use this bu
 #    "Select report date:",
 #    ["Weekly", "Monthly", "Received", "Today", "Yesterday", "Tomorrow"]  # Disabled Monthly for now
 #)
-option = "Received"
+option = "Weekly"
 
 @st.cache_data(ttl=1800.0)
 def get_cached_report(option):
@@ -322,18 +324,10 @@ def get_cached_report(option):
 
 
 df = get_cached_report(option)        
-delivered_today = len(df[df['status'].isin(['delivered', 'delivered_finish'])])
-
-
-
-
-print(f"{datetime.datetime.now()}: Displaying metrics")
-if option != "Received":
-    col1, col2, col3 = st.columns(3)
-    col1.metric(f"Delivered {option.lower()} :package:", delivered_today)
-
-
-filtered_frame = df
+returns_df = df[df["status"].isin(["returning","returned","returned_finish"])]
+filtered_frame = df[df["status"].isin(["performer_lookup"])]
+filtered_frame = filtered_frame.apply(lambda row: chech_for_returns(row, returns_df), axis=1)
+filtered_frame = filtered_frame.apply(lambda row: define_zone(row), axis=1)
 print(f"{datetime.datetime.now()}: Displaying dataframe")
 st.dataframe(filtered_frame)
 
