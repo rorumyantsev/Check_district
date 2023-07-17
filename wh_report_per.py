@@ -58,61 +58,7 @@ def define_zone(row):
 def check_for_returns (row, returns_df):
     row("returns") = len(returns_df[returns_df["unique_id"].isin([row("unique_id")])])
     return row
-'''
-# deprecated: compare districts with geofix report districts
-def check_district_geofix(row):
-    row["zone"] = "No District/ERROR"
-    if type(row["Second Address Line"]) == str:
-        strcheck = False
-    else:
-        strcheck = True
-    if (numpy.isnan(row["Log platform latitude"]) or numpy.isnan(row["Log platform longitude"])):
-        row["zone_comparison"] = "Not enough data"
-    else:
-        if not(row["Log platform latitude"]!=0 and row["Log platform longitude"]!=0):
-            row["zone_comparison"] = "Not enough data"
-        else:
-            for i in range(N_Districts):
-                if lima_zones_polygon[i].contains(Point([row["Log platform longitude"], row["Log platform latitude"]])):
-                    row["zone"] = lima_zones_names[i]
-            if type(row["Second Address Line"]) == str:
-                strcheck = True
-            else:
-                strcheck = False
-            if strcheck:
-                if row["zone"].lower() == row["Second Address Line"].lower():
-                    row["zone_comparison"] = "True"
-                else:
-                    row["zone_comparison"] = "False"
-            else:
-                row["zone_comparison"] = "Not enough data"
-    return row
-'''
-'''
-# Deprecated: get geofix report
-def get_geofix_report():
-    client_timezone = "America/Lima"
-    today = datetime.datetime.now(timezone(client_timezone))
-    search_from = today.replace(hour=0, minute=0, second=0, microsecond=0) - datetime.timedelta(days=3)
-    search_to = today.replace(hour=23, minute=59, second=59, microsecond=999999)
-    date_from = search_from.strftime("%Y-%m-%d")
-    date_to = search_to.strftime("%Y-%m-%d")
-    url = GEOFIX_URL
-    headers = {'Authorization': f"Bearer {GEOFIX_SECRET}"}
-    payload = {'fromDate': date_from, 'toDate': date_to}
-    r = requests.get(url, headers=headers, params=payload)
-    geofix_report_file = r.content
-    #geofix_report_df = pandas.DataFrame(data={'col1': [1, 2], 'col2': [3, 4]})
-    #st.write(geofix_report_df)
-    try:
-        geofix_report_df = pandas.read_excel(geofix_report_file)
-    except Exception as e:
-        st.write(e)
-    filtered_report_df = geofix_report_df[~geofix_report_df["Internal Status"].isin(["Delivered"])]
-    filtered_report_df = filtered_report_df.apply(lambda row: check_district_geofix(row), axis=1)
-    #st.write(filtered_report_df)
-    return filtered_report_df
-'''
+
 
 
 def get_claims(secret, date_from, date_to, cursor=0):
