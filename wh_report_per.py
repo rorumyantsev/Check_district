@@ -291,7 +291,8 @@ if without_matching:
     print_df = print_df[print_df["matching"].isin([False])]
 
 print_df = print_df.drop(columns = ["unique_id","matching"])
-filtered_frame = filtered_frame.drop(columns = ["unique_id","matching"])
+#filtered_frame = filtered_frame.drop(columns = ["unique_id","matching"])
+filtered_frame = print_df
 st.dataframe(print_df)
 
 client_timezone = "America/Santiago"
