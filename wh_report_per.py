@@ -292,7 +292,7 @@ if without_matching:
 
 print_df = print_df.drop(columns = ["unique_id","matching"])
 #filtered_frame = filtered_frame.drop(columns = ["unique_id","matching"])
-print_df = print_df.rename({"zone_coord":"distrito_incorrecto","zone_adr":"distrito_correcto"})
+print_df = print_df.rename(columns = {"zone_coord":"distrito_incorrecto","zone_adr":"distrito_correcto"})
 filtered_frame = print_df
 st.dataframe(print_df)
 
